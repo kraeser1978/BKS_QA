@@ -16,6 +16,12 @@ public class BKSMainPage extends RegressionTest {
         $(By.cssSelector(chartsLocator)).waitUntil(Condition.visible,10000);
     }
 
+    public AllTransactionsPage moveToAllTransactionsList(){
+        clickLink("Проводки АБС");
+        clickLink("Все");
+        return page(AllTransactionsPage.class);
+    }
+
     public IncidentsPage moveToOKKPIncidents(){
         clickLink("Инциденты");
         clickLink("ОККП");

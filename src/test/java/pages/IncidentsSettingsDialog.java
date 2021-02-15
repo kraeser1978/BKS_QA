@@ -16,7 +16,7 @@ public class IncidentsSettingsDialog {
 
     public IncidentsSettingsDialog(){
         String settingsButtonLocator = locators.getProperty("setup_dialog_title");
-        $(By.xpath(settingsButtonLocator)).shouldBe(Condition.visible);
+        $(By.xpath(settingsButtonLocator)).waitUntil(Condition.visible,8000);
         String saveButtonLocator = locators.getProperty("button_template1").replace("''","'Сохранить'");
         $(By.xpath(saveButtonLocator)).shouldBe(Condition.visible);
     }

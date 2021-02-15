@@ -28,37 +28,38 @@
             <artifactId>allure-junit4</artifactId>
             <version>${allure.version}</version>
         </dependency>
+
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-selenide</artifactId>
             <version>${allure.version}</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>com.codeborne</groupId>-->
-            <!--<artifactId>selenide</artifactId>-->
-            <!--<version>5.18.1</version>-->
-        <!--</dependency>-->
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>1.7.30</version>
         </dependency>
+
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>30.1-jre</version>
         </dependency>
+
         <dependency>
             <groupId>com.browserup</groupId>
             <artifactId>browserup-proxy</artifactId>
             <version>2.1.2</version>
             <type>pom</type>
         </dependency>
+
         <dependency>
             <groupId>com.codeborne</groupId>
             <artifactId>pdf-test</artifactId>
             <version>1.6.0</version>
         </dependency>
+
         <dependency>
             <groupId>com.codeborne</groupId>
             <artifactId>xls-test</artifactId>
@@ -208,12 +209,6 @@
             <version>2.0.21</version>
         </dependency>
 
-        <!--<dependency>-->
-            <!--<groupId>jp.qpg</groupId>-->
-            <!--<artifactId>Excel-To-PDF-with-POI-and-PDFBox</artifactId>-->
-            <!--<version>0.4.1</version>-->
-        <!--</dependency>-->
-
         <dependency>
             <groupId>com.github.mygreen</groupId>
             <artifactId>excel-cellformatter</artifactId>
@@ -301,29 +296,4 @@
     </build>
 
 
-    <!--<build>-->
-        <!--<plugins>-->
-            <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-compiler-plugin</artifactId>-->
-                <!--<configuration>-->
-                    <!--<source>8</source>-->
-                    <!--<target>8</target>-->
-                <!--</configuration>-->
-            <!--</plugin>-->
-        <!--</plugins>-->
-    <!--</build>-->
-
-    <!--<repositories>-->
-        <!--<repository>-->
-            <!--<id>qpg.jp</id>-->
-            <!--<name>qpg.jp repository</name>-->
-            <!--<url>http://qpg.jp/maven</url>-->
-        <!--</repository>-->
-    <!--</repositories>-->
-
-    <!--<dependencies>-->
-<!---->
-<!---->
-    <!--</dependencies>-->
 </project>

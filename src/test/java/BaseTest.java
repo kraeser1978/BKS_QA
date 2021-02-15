@@ -1,16 +1,15 @@
 import com.codeborne.selenide.logevents.SelenideLogger;
 import common.RegressionTest;
+import org.hamcrest.core.*;
 import org.junit.*;
-
+import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 import static org.junit.Assert.*;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.runners.MethodSorters;
-import pages.BKSMainPage;
-import pages.IncidentsPage;
-import pages.IncidentsSettingsDialog;
-import pages.SignInDialog;
+import pages.*;
 
 import static org.junit.Assert.assertThat;
 
@@ -65,12 +64,68 @@ public class BaseTest extends RegressionTest {
         assertNotEquals("ОШИБКА на странице Настройка представления (Базовое) не работает кнопка удаления группы в фильтре",groupBeforeAdd,groupAfterAdd);
     }
 
+    @Test
+    public void test006userCanFilterByState() throws Exception {
+        BKSMainPage bksMainPage = new SignInDialog().main("testuser_name");
+        IncidentsPage incidentsPage = bksMainPage.moveToOKKPIncidents();
+        String searchByState1 = dataInput.get("Состояние1");
+        incidentsPage
+                .filterByList("Состояние",searchByState1)
+                .clickFilter();
+        ArrayList<String> rows4State1 = getAllRowsValuesByColName("Состояние");
+        assertThat("ОШИБКА: отфильтрованные строки в поле \"Состояние\" содержат иное значение" ,rows4State1, IsCollectionContaining.hasItem(searchByState1));
+
+        String searchByState2 = dataInput.get("Состояние2");
+        incidentsPage
+                .filterByList("Состояние",searchByState2)
+                .clickFilter();
+        ArrayList<String> rows4State2 = getAllRowsValuesByColName("Состояние");
+        assertThat("ОШИБКА: отфильтрованные строки в поле \"Состояние\" содержат иное значение" ,rows4State2, IsCollectionContaining.hasItem(searchByState2));
+    }
+
+    @Test
+    public void test007userCanSwitchIncidentCardTabs() throws Exception {
+        BKSMainPage bksMainPage = new SignInDialog().main("testuser_name");
+        IncidentsPage incidentsPage = bksMainPage.moveToOKKPIncidents();
+        IncidentCardPage incidentCardPage = incidentsPage.openIncidentDetailsPage();
+        try {
+            incidentCardPage
+                    .switchToTab("Аналитика")
+                    .switchToTab("Дополнительная аналитика")
+                    .switchToTab("Решение")
+                    .switchToTab("Возмещение");
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertEquals("ОШИБКА при переходе на вкладку в карточке инцидента",true,incidentCardPage != null);
+        }
+    }
+
+    @Test
+    public void test008userCanOpenTransactionsList() throws Exception {
+        BKSMainPage bksMainPage = new SignInDialog().main("testuser_name");
+        AllTransactionsPage allTransactionsPage = bksMainPage.moveToAllTransactionsList();
+        assertEquals("ОШИБКА ошибка при открытии страницы Проводки АБС - Все",true,allTransactionsPage != null);
+    }
+
+    @Test
+    public void test009userCanFilterByAmount() throws Exception {
+        BKSMainPage bksMainPage = new SignInDialog().main("testuser_name");
+        AllTransactionsPage allTransactionsPage = bksMainPage.moveToAllTransactionsList();
+        String searchBySum = dataInput.get("Сумма1");
+        allTransactionsPage
+                .filterByInput("Сумма",searchBySum)
+                .clickFilter();
+        ArrayList<String> result1 = getAllRowsValuesByColName("Сумма");
+        assertThat("ОШИБКА: отфильтрованные строки в поле \"Сумма\" содержат иное значение" ,result1, IsCollectionContaining.hasItem(searchBySum));
+    }
+
     @BeforeClass
     public static void testPreparation(){
         try {
             setWorkingFolder();
+            readInputDataFile("\\Input_data.txt");
             getLocators("\\BKS_locators.properties");
-        } catch (URISyntaxException e) {
+        } catch (URISyntaxException | IOException e) {
             e.printStackTrace();
         }
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide().screenshots(true).savePageSource(true));
@@ -78,6 +133,6 @@ public class BaseTest extends RegressionTest {
 
     @After
     public void testCompletion(){
-//        tearDown();
+        tearDown();
     }
 }

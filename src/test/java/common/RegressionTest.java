@@ -28,6 +28,39 @@ public class RegressionTest {
     public static HashMap<String, String> dataInput = new HashMap<>();
     public static Properties locators = new Properties();
 
+    public void waitForTheTableToLoad(){
+        String tableRowsLocator = locators.getProperty("incidents_table_rows");
+        ElementsCollection rows = $$(By.xpath(tableRowsLocator)).shouldBe(CollectionCondition.sizeGreaterThanOrEqual(20),15000);
+        logger.log(Level.INFO,"таблица загружена");
+    }
+
+    public ArrayList<String> getAllRowsValuesByColName(String fieldName){
+        int seqNo = getColSeqNoByName(fieldName);
+        ArrayList<String> values = new ArrayList<>();
+        String allRowsValsLocator = locators.getProperty("all_rows_by_cell_seqno").replace("td[]","td[" + seqNo + "]");
+        ElementsCollection rows = $$(By.xpath(allRowsValsLocator));
+        for (int i = 0; i < rows.size(); i++) {
+            String fielValue = rows.get(i).getText();
+            values.add(fielValue);
+        }
+        return values;
+    }
+
+    public int getColSeqNoByName(String fieldName){
+        int colSeqNo = 0;
+        String headerFieldNamesLocator = locators.getProperty("incidents_header_search_field_names_template");
+        ElementsCollection fieldNames = $$(By.xpath(headerFieldNamesLocator));
+        int colsCount = fieldNames.size();
+        for (int i = 0; i <colsCount; i++) {
+            String currentName = fieldNames.get(i).getText();
+            if (currentName.equals(fieldName)){
+                colSeqNo = i+1;
+                break;
+            }
+        }
+        return colSeqNo;
+    }
+
     public void clickLink(String linkName){
         String linkLocator = locators.getProperty("link_template1").replace("''","'" + linkName + "'");
         $(By.xpath(linkLocator)).waitUntil(Condition.enabled,10000).click();
@@ -98,7 +131,6 @@ public class RegressionTest {
         driver = new ChromeDriver(options);
         WebDriverRunner.setWebDriver(driver);
     }
-
 
     public void loadProps() throws Exception {
         logger.log(INFO, "считываем параметры проекта из properties файлов...");
